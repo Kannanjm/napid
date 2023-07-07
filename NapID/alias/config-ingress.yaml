@@ -1,0 +1,49 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: kong
+  name: config-ingress
+  namespace: napid-alias
+spec:
+  rules:
+  - host: config-service
+    http:
+      paths:
+      - backend:
+          service:
+            name: config-service
+            port:
+              number: 8888
+        path: /api/*
+        pathType: ImplementationSpecific
+  - host: napid-portal
+    http:
+      paths:
+      - backend:
+          service:
+            name: napid-portal
+            port:
+              number: 8081
+        path: /api/portal/*
+        pathType: ImplementationSpecific
+  - host: napid-users
+    http:
+      paths:
+      - backend:
+          service:
+            name: napid-users
+            port:
+              number: 8080
+        path: /api/users/*
+        pathType: ImplementationSpecific
+  - host: napid-vendors
+    http:
+      paths:
+      - backend:
+          service:
+            name: napid-vendors
+            port:
+              number: 8082
+        path: /api/f3/*
+        pathType: ImplementationSpecific

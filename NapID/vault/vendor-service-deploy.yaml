@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+  labels:
+    io.napid.service: vendor-service
+  name: vendor-service
+  namespace: napid-vault
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.napid.service: vendor-service
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        io.napid.service: vendor-service
+    spec:
+      containers:
+      - image: napidrepo.azurecr.io/vendor-service:latest
+        imagePullPolicy: Always
+        name: vendor-service
+        ports:
+        - containerPort: 8086
+          protocol: TCP
+        env:
+        - name: ENVIRONMENT
+          value: env      
+        resources: {}
+      imagePullSecrets:
+      - name: napidrepo-secret
+      securityContext: {}

@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: kong
+  name: vendor-service-ingress
+  namespace: napid-vault
+spec:
+  rules:
+  - host: vendor-service
+    http:
+      paths:
+      - backend:
+          service:
+            name: vendor-service
+            port:
+              number: 8086
+        path: /api/vendor
+        pathType: ImplementationSpecific

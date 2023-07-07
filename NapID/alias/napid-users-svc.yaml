@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    io.napid.service: napid-users
+  name: napid-users
+  namespace: napid-alias
+spec:
+  ports:
+  - name: napid-users
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    io.napid.service: napid-users
+  type: ClusterIP

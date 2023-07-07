@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+  labels:
+    io.napid.service: napid-users
+  name: napid-users
+  namespace: napid-alias
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      io.napid.service: napid-users
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        io.napid.service: napid-users
+    spec:
+      containers:
+      - image: napidrepo.azurecr.io/napid-users:latest
+        imagePullPolicy: Always
+        name: napid-users
+        env:
+        - name: ENVIRONMENT
+          value: env        
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources: {}
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+      - name: napidrepo-secret
+      restartPolicy: Always
+      securityContext: {}

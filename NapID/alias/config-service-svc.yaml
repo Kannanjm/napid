@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: config-service
+  namespace: napid-alias
+spec:
+  ports:
+  - name: "8888"
+    port: 8888
+    protocol: TCP
+    targetPort: 8888
+  selector:
+    io.napid.service: config-service
+  type: ClusterIP

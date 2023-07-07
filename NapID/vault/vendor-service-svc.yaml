@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    io.napid.service: vendor-service
+  name: vendor-service
+  namespace: napid-vault
+spec:
+  ports:
+  - name: "8086"
+    port: 8086
+    protocol: TCP
+    targetPort: 8086
+  selector:
+    io.napid.service: vendor-service
+  type: ClusterIP

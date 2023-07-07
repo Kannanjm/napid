@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+  labels:
+    io.napid.service: vendor-cron
+  name: vendor-cron
+  namespace: napid-vault
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.napid.service: vendor-cron
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        io.napid.service: vendor-cron
+    spec:
+      containers:
+      - image: napidrepo.azurecr.io/vendor-cron:latest
+        imagePullPolicy: Always
+        name: vendor-cron
+        env:
+        - name: ENVIRONMENT
+          value: env        
+        resources: {}
+      imagePullSecrets:
+      - name: napidrepo-secret
+      restartPolicy: Always
+      securityContext: {}

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+  labels:
+    app: napid-web
+  name: napid-web-deployment
+  namespace: napid-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: napid-web
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: napid-web
+    spec:
+      containers:
+      - image: napidrepo.azurecr.io/napid-web:latest
+        imagePullPolicy: Always
+        name: napid-web
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        resources: {}
+      imagePullSecrets:
+      - name: napidrepo-secret
